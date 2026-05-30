@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <section class="register-page">
+
+        <div class="register-container">
+            <h1>Register</h1>
+            <form action="" onsubmit="registerUser(event)">
+
+                <div class="form-control">
+                    <label>Name</label>
+                    <input type="text" id="name" placeholder="Enter Name">
+                    <span id="nameerr" class="error"></span>
+                </div>
+
+                <div class="form-control">
+                    <label>Email</label>
+                    <input type="email" id="emailid" placeholder="Enter Email">
+                    <span id="emailerr" class="error"></span>
+                </div>
+
+                <div class="form-control">
+                    <label>Phone</label>
+                    <input type="number" id="phone" placeholder="Enter Phone Number">
+                    <span id="phoneerr" class="error"></span>
+                </div>
+
+                <div class="form-control">
+                    <label>Password</label>
+                    <input type="password" id="pass" placeholder="Enter Password">
+                    <span id="passerr" class="error"></span>
+                </div>
+
+                <div class="form-control">
+                    <label>Confirm Password</label>
+                    <input type="password" id="cpass" placeholder="Confirm Password">
+                    <span id="cpasserr" class="error"></span>
+                </div>
+
+                <button type="submit">Register</button>
+
+                <div class="login-link">
+
+             <p>
+                   Already have an account ?
+                  <a href="index.html">Login Here</a>
+             </p>
+
+</div>
+            </form>
+        </div>
+
+        
+
+    </section>
+
+
+    <script>
+        let userstorage = JSON.parse(localStorage.getItem("user")) || []
+        let registerUser=(e)=>{
+            e.preventDefault()
+
+            let name = document.getElementById("name")
+            let emailid = document.getElementById("emailid")
+            let phone = document.getElementById("phone")
+            let pass = document.getElementById("pass")
+            let cpass = document.getElementById("cpass")
+
+
+            let nameerr = document.getElementById("nameerr")
+            let emailerr = document.getElementById("emailerr")
+            let phoneerr = document.getElementById("phoneerr")
+            let passerr = document.getElementById("passerr")
+            let cpasserr = document.getElementById("cpasserr")
+
+            let nameCheck = false;
+            let emailCheck = false;
+            let phoneCheck = false;
+            let passCheck = false;
+            let cpassCheck = false;
+
+            if(name.value == ""){
+                nameerr.innerHTML = "Name should not be empty"
+                nameCheck=false;
+            }else if(name.value.length<3){
+                nameerr.innerHTML = "Name must br minimum 3 charcters"
+                nameCheck = false;
+            }
+            else{
+                nameerr.innerHTML = ""
+                nameCheck = true;
+            }
+             let phonepattern = /^[6-9]\d{9}$/
+
+             if(phone.value == ""){
+                phoneerr.innerHTML = "Phonenumber should not be empty"
+                phoneCheck = false;
+             }else if(!phonepattern.test(phone.value)){
+                phoneerr.innerHTML = "Invalid phonenumber"
+                phoneCheck = false;
+             }else if(phone.value.length>10){
+                phoneerr.innerHTML = "Phonenumber must be 10 digit"
+                phoneCheck = false;
+             }else{
+                phoneerr.innerHTML = ""
+                phoneCheck = true;
+             }
+
+             let emailpattern = /^[a-zA-Z0-9-+%.]+@[a-zA-Z0-9.+-]+\.[a-zA-Z]{2,}$/
+
+             if(emailid.value == ""){
+                emailerr.innerHTML = "Email should not be empty"
+                emailCheck = false;
+             }else if(!emailpattern.test(emailid.value)){
+                emailerr.innerHTML = "Invalid emailid "
+                emailCheck = false;
+             }else{
+                emailerr.innerHTML = ""
+                emailCheck = true;
+             }
+
+             if(pass.value == ""){
+                passerr.innerHTML = "Password should not be empty"
+                passCheck = false;
+             }else if(pass.value.length<6){
+                passerr.innerHTML = "Paaword must be 6 letters"
+                passCheck = false
+             }
+             else{
+                passerr.innerHTML = ""
+                passCheck = true;
+             }
+
+              if(cpass.value == ""){
+                cpasserr.innerHTML = "ConfirmPassword should not be empty"
+                cpassCheck = false;
+             }else if(cpass.value.length<6){
+                cpasserr.innerHTML = "Paaword must be 6 letters"
+                cpassCheck = false
+             }
+             else if(pass.value != cpass.value){
+                cpasserr.innerHTML = "Password should not be matched"
+                cpassCheck = false;
+             }
+
+             else{
+                cpasserr.innerHTML = ""
+                cpassCheck = true;
+             }
+
+             if(nameCheck && phoneCheck && emailCheck && passCheck && cpassCheck){
+
+                let user = {
+                    name:name.value,
+                    emailid:emailid.value,
+                    phone:phone.value,
+                    pass:cpass.value
+                }
+            
+                userstorage.push(user);
+                  localStorage.setItem("user",JSON.stringify(userstorage));
+                  alert("Registration successful");
+                  window.location.href="index.html";
+                
+             }else{
+
+             }
+
+
+        }
+    </script>
+    
+</body>
+</html>

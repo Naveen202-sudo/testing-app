@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <h1>Apex Coco Private Limited</h1>
+
+        <div class="user-info">
+            
+             <button onclick="logout()" class="logout-btn">  Logout </button>
+    
+        </div>
+
+        <nav>
+            <a href="./index.html">Home</a>
+            <a href="./products.html">Products</a>
+            <a href="./testing.html">Testing</a>
+            <a href="./dashboard.html">Dashboard</a>
+            
+            
+        </nav>
+    </header>
+
+
+     <section class="dashboard">
+        <h2>Chemical Testings</h2>
+
+        <form action="" onsubmit="saveTest(event)">
+
+            <div class="form-container">
+
+                <div class="form-control">
+                    <label for="">Juice Name</label>
+                    <select name="" id="juice">
+                        <option value="1">Plane coconutwater</option>
+                        <option value="2">Mango coconutwater</option>
+                        <option value="3">Guava coconutwater</option>
+                        <option value="4">Litchi coconutwater</option>
+                        <option value="5">Apple coconutwater</option>
+                        <option value="6">Jeera coconutwater</option>
+                    </select>
+                </div>
+
+                <div class="form-control">
+                    <label for="">pH Value</label>
+                    <input type="number" id="ph" placeholder="Enter the pH value" step="any">
+
+                </div>
+
+                <div class="form-control">
+                    <label for="">Brix Value</label>
+                    <input type="number" id="brix" placeholder="Enter the Brix value" step="any">
+
+                </div>
+
+
+                <div class="form-control">
+                    <label for="">Acidity</label>
+                    <input type="number" id="acid" placeholder="Enter the Acidity" step="any">
+
+                </div>
+
+
+                  <div class="form-control">
+                    <label>Status</label>
+
+                    <select id="status">
+                        <option>Pass</option>
+                        <option>Fail</option>
+                    </select>
+                </div>
+
+
+
+            </div>
+
+
+             <button type="submit" class="submit">Save Test</button>
+
+
+        </form>
+
+         <div class="table-container">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>Juice</th>
+                        <th>PH</th>
+                        <th>Brix</th>
+                        <th>Acidity</th>
+                        <th>Status</th>
+                        <th>Employee</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Action</th>
+                    </tr>
+
+                </thead>
+
+                <tbody >
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+    </section>
+
+
+    <script>
+
+        let today = new Date().toLocaleDateString()
+
+        let savedDate = localStorage.getItem("savedDate")
+
+        if(savedDate != today){
+
+        localStorage.removeItem("testData")
+
+        localStorage.setItem("savedDate", today)
+
+}
+
+        const prolist = [
+            {
+            pid: 1,
+            productName: 'Plane Coconut Water',
+
+            phstart: 4.5,
+            phend: 5.5,
+
+            brixstart: 5.70,
+            brixend: 5.80,
+
+            acidstart: 0.02,
+            acidend: 0.08,
+        },
+
+         {
+            pid: 2,
+            productName: 'Mango Coconut Water',
+
+            phstart: 5.5,
+            phend: 6.5,
+
+            brixstart: 6.70,
+            brixend: 6.80,
+
+            acidstart: 1.02,
+            acidend: 1.08,
+        },
+
+        {
+            pid: 3,
+            productName: 'Guava Coconut Water',
+
+            phstart: 3.5,
+            phend: 4.5,
+
+            brixstart: 7.70,
+            brixend: 7.80,
+
+            acidstart: 0.50,
+            acidend: 0.90,
+        },
+
+        {
+            pid: 4,
+            productName: 'Litchi Coconut Water',
+
+            phstart: 4.0,
+            phend: 5.0,
+
+            brixstart: 8.70,
+            brixend: 8.90,
+
+            acidstart: 0.20,
+            acidend: 0.40,
+        },
+
+         {
+            pid: 5,
+            productName: 'Apple Coconut Water',
+
+            phstart: 4.2,
+            phend: 5.2,
+
+            brixstart: 9.00,
+            brixend: 9.50,
+
+            acidstart: 0.10,
+            acidend: 0.30,
+        },
+
+
+        {
+            pid: 6,
+            productName: 'Jeera Coconut Water',
+
+            phstart: 5.0,
+            phend: 6.0,
+
+            brixstart: 4.00,
+            brixend: 5.00,
+
+            acidstart: 0.01,
+            acidend: 0.09,
+        }
+    ]
+
+
+    let pn = document.querySelector("#juice")
+    let ph = document.querySelector("#ph")
+    let brix = document.querySelector("#brix")
+    let acid = document.querySelector("#acid")
+    let status = document.querySelector("#status")
+
+    let phcheck = false
+    let brixcheck = false
+    let acidcheck = false
+
+     ph.addEventListener("input", () => {
+
+        let fil = prolist.filter((ele) =>
+
+            ele.pid == pn.value &&
+
+            Number(ph.value) >= ele.phstart &&
+
+            Number(ph.value) <= ele.phend
+
+        )
+
+        phcheck = fil.length >= 1 ? true : false
+
+        checkStatus()
+    })
+
+
+        brix.addEventListener("input", () => {
+
+        let fil = prolist.filter((ele) =>
+
+            ele.pid == pn.value &&
+
+            Number(brix.value) >= ele.brixstart &&
+
+            Number(brix.value) <= ele.brixend
+
+        )
+
+        brixcheck = fil.length >= 1 ? true : false
+
+        checkStatus()
+    })
+
+
+    acid.addEventListener("input", () => {
+
+        let fil = prolist.filter((ele) =>
+
+            ele.pid == pn.value &&
+
+            Number(acid.value) >= ele.acidstart &&
+
+            Number(acid.value) <= ele.acidend
+
+        )
+
+        acidcheck = fil.length >= 1 ? true : false
+
+        checkStatus()
+    })
+
+
+    let checkStatus=()=>{
+        if(phcheck && brixcheck && acidcheck){
+            status.value = "Pass"
+        }else{
+            status.value = "Fail"
+        }
+
+    }
+
+
+        let testData = JSON.parse(localStorage.getItem("testData")) || []
+
+
+
+
+    
+
+    let saveTest=(e)=> {
+
+        e.preventDefault()
+
+        if(status.value == "Fail"){
+            alert("Chemical test is failed")
+            return
+        }
+
+
+        let employee =
+            localStorage.getItem("employeeName") || "Employee"
+
+
+        let today = new Date()
+
+        let date = today.toLocaleDateString()
+
+        let time = today.toLocaleTimeString()
+
+
+
+        let data = {
+
+            juice:
+                pn.options[pn.selectedIndex].text,
+
+            ph: ph.value,
+
+            brix: brix.value,
+
+            acid: acid.value,
+
+            status: status.value,
+
+            employee,
+
+            date,
+
+            time
+        }
+
+
+
+        testData.push(data)
+
+
+        localStorage.setItem(
+            "testData",
+            JSON.stringify(testData)
+        )
+
+
+
+        displayData()
+
+
+
+        document.getElementById("ph").value = ""
+
+        document.getElementById("brix").value = ""
+
+        document.getElementById("acid").value = ""
+
+        document.getElementById("status").value = ""
+    }
+
+
+
+
+    // DISPLAY TABLE
+
+    let displayData=()=> {
+
+        let tbody = document.querySelector("tbody")
+
+        let rows = ""
+
+
+        testData.forEach((item,index) => {
+
+            rows += `
+
+            <tr>
+
+                <td>${item.juice}</td>
+
+                <td>${item.ph}</td>
+
+                <td>${item.brix}</td>
+
+                <td>${item.acid}</td>
+
+                <td>${item.status}</td>
+
+                <td>${item.employee}</td>
+
+                <td>${item.date}</td>
+
+                <td>${item.time}</td>
+                
+                 <td>
+
+                        <button class="edit-btn" onclick="editData(${index})">Edit</button>
+
+                        <button class="delete-btn" onclick="deleteData(${index})"> Delete </button>
+
+                    </td>
+
+            </tr>
+
+            `
+        })
+
+
+        tbody.innerHTML = rows
+    }
+
+
+
+    let  deleteData = (index) => {
+
+            testData.splice(index, 1)
+
+            localStorage.setItem(
+                "testData",
+                JSON.stringify(testData)
+            )
+
+            displayData()
+        }
+
+
+        let editData = (index) => {
+
+            let item = testData[index]
+
+            ph.value = item.ph
+
+            brix.value = item.brix
+
+            acid.value = item.acid
+
+            status.value = item.status
+
+            deleteData(index)
+        }
+
+        displayData()
+
+
+        let logout = ()=>{
+
+    alert("Logout Successful")
+
+    window.location.href = "index.html"
+
+}
+    
+
+
+    </script>
+
+    
+</body>
+</html>

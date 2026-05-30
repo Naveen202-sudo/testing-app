@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Document</title>
+</head>
+<body>
+
+    <header>
+        <h1>Apex Coco Private Limited</h1>
+
+        <div class="user-info">
+
+               <button onclick="toggleTheme()" class="theme-btn" id="themeBtn"> 🌙  </button>
+            
+             <button onclick="logout()" class="logout-btn">  Logout </button>
+            
+        </div>
+
+        <nav>
+            <a href="./index.html">Home</a>
+            <a href="./products.html">Products</a>
+            <a href="./testing.html">Testing</a>
+            <a href="./dashboard.html">Dashboard</a>
+            
+            
+        </nav>
+    </header>
+
+
+    <section class="dashboard">
+
+        <h2 class="dashboard-title">
+            Dashboard Overview
+        </h2>
+
+        <div class="dashboard-boxes">
+
+            <div class="box">
+                <h3>Total Employees</h3>
+                <h1 id="employeeCount">0</h1>
+            </div>
+
+            <div class="box">
+                <h3>Current Testing Product</h3>
+                <h1 id="currentProduct">0</h1>
+            </div>
+
+            <div class="box">
+                <h3>Completed Tests</h3>
+                <h1 id="testCount">0</h1>
+            </div>
+
+        </div>
+
+
+
+        <div class="recent-tests">
+
+            <h2>Recent Chemical Tests</h2>
+             <div id="testCards" class="test-cards"></div>
+
+        </div>
+
+    </section>
+
+
+    <script>
+
+         let users = JSON.parse(localStorage.getItem("user")) || []
+
+        document.getElementById("employeeCount").innerHTML = users.length
+
+        let testData =JSON.parse(localStorage.getItem("testData")) || []
+
+
+        document.getElementById("testCount").innerHTML =testData.length
+ 
+
+        if(testData.length > 0){
+
+            let lastTest =testData[testData.length - 1]
+
+            document.getElementById("currentProduct").innerHTML = lastTest.juice
+
+        }else{
+
+            document.getElementById("currentProduct").innerHTML ="No Test"
+
+        }
+
+        let testCards = document.getElementById("testCards")
+
+        let cards = ""
+
+        testData.forEach((item) => {
+
+            cards += `
+
+            <div class="test-card">
+
+                <h3>${item.juice}</h3>
+
+                <p><strong>pH :</strong> ${item.ph}</p>
+
+                <p><strong>Brix :</strong> ${item.brix}</p>
+
+                <p><strong>Acid :</strong> ${item.acid}</p>
+
+                <p>
+                    <strong>Status :</strong> 
+                    <span class="${item.status == "Pass" ? "pass" : "fail"}">
+                        ${item.status}
+                    </span>
+                </p>
+
+                <p><strong>Employee :</strong> ${item.employee}</p>
+
+            </div>
+
+            `
+        })
+
+        testCards.innerHTML = cards
+
+
+
+        
+
+       
+           let logout = ()=>{
+
+    alert("Logout Successful")
+
+    window.location.href = "index.html"
+
+}
+
+   let toggleTheme = ()=>{
+
+        document.body.classList.toggle("dark-mode")
+        let btn = document.getElementById("themeBtn")
+        if(document.body.classList.contains("dark-mode")){
+            btn.innerHTML = "☀️"
+        }else{
+            btn.innerHTML = "🌙 "
+        }
+
+    }
+
+
+
+    </script>
+
+
+   
+
+
+    
+</body>
+</html>

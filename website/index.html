@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+
+
+    
+
+    <section class="login-page">
+
+    <div class="login-container">
+        <h1>Apex Coco Private Limited</h1>
+
+        <form action="" onsubmit="loginUser(event)">
+
+            <div class="form-control">
+                <label for="">Enter Email</label>
+                <input type="email" id="email" placeholder="ex.naveen@gmail.com">
+            </div>
+
+
+            
+            <div class="form-control">
+                <label for="">Password</label>
+                <input type="password" id="password" placeholder="Enter password">
+            </div>
+
+            <button type="submit">Submit</button>
+
+             <div class="register-link">
+        <p>
+            Don't have an account ?
+            <a href="register.html">Register Here</a>
+        </p>
+    </div>
+
+        </form>
+    </div>
+
+    </section>
+
+    <script>
+
+           let loginUser = (e)=>{
+
+            e.preventDefault()
+
+            let email = document.getElementById("email").value
+            let password = document.getElementById("password").value
+
+            let userData = JSON.parse(localStorage.getItem("user"))
+
+            if(userData == null){
+                alert("No account found")
+                return
+            }
+
+
+        let user = userData.find((item) =>
+
+        item.emailid == email &&
+        item.pass == password
+
+    )
+
+    if (user) {
+
+        localStorage.setItem(
+            "employeeName",
+            user.name
+        )
+
+        alert("Login Success")
+
+        window.location.href =
+            "dashboard.html"
+
+    } else {
+
+        alert("Invalid Email or Password")
+    }
+
+
+        }
+
+       
+    </script>
+    
+</body>
+</html>
